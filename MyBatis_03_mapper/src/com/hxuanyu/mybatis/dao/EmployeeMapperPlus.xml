@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//com.hxuanyu.mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hxuanyu.mybatis.dao.EmployeeMapperPlus">
+    <!--自定义mapper规则-->
+    <resultMap id="MyEmp" type="com.hxuanyu.mybatis.bean.Employee">
+        <!--指定主键列的封装
+        column：指定哪一列
+        property：指定对应的javaBean属性
+        -->
+        <id column="id" property="id"/>
+        <!--定义普通列，不写的默认会自动生成，但是建议都写上-->
+        <result column="last_name" property="lastName"/>
+        <result column="gender" property="gender"/>
+        <result column="email" property="email"/>
+    </resultMap>
+    <select id="getEmpById" resultMap="MyEmp">
+        SELECT *
+        FROM tbl_employee
+        WHERE id = #{id}
+    </select>
+
+    <!--联合查询使用级联属性-->
+    <resultMap id="MyDifEmp" type="com.hxuanyu.mybatis.bean.Employee">
+        <id column="id" property="id"/>
+        <result column="last_name" property="lastName"/>
+        <result column="gender" property="gender"/>
+        <result column="did" property="dept.id"/>
+        <result column="dept_name" property="dept.departmentName"/>
+    </resultMap>
+    <select id="getEmpAndDept" resultMap="MyDifEmp2">
+        SELECT e.id id, e.last_name last_name, e.gender gender, e.d_id d_id, d.id did, d.dept_name dept_name
+        FROM tbl_employee e,
+             tbl_dept d
+        WHERE e.d_id = d.id
+          AND e.id = 1;
+    </select>
+
+
+    <resultMap id="MyDifEmp2" type="com.hxuanyu.mybatis.bean.Employee">
+        <id column="id" property="id"/>
+        <result column="last_name" property="lastName"/>
+        <result column="gender" property="gender"/>
+
+        <association property="dept" javaType="com.hxuanyu.mybatis.bean.Department">
+            <id column="did" property="id"/>
+            <result column="dept_name" property="departmentName"/>
+        </association>
+    </resultMap>
+
+
+    <resultMap id="MyEmpByStep" type="com.hxuanyu.mybatis.bean.Employee">
+        <id column="id" property="id"/>
+        <result column="last_name" property="lastName"/>
+        <result column="email" property="email"/>
+        <result column="gender" property="gender"/>
+        <association property="dept" javaType="com.hxuanyu.mybatis.bean.Department"
+                     select="com.hxuanyu.mybatis.dao.DepartmentMapper.getDeptById" column="d_id">
+            <!--使用select指定的方法，并传入column指定的这列参数的值查出对象，并封装给property-->
+            <id column="id" property="id"/>
+            <result column="dept_name" property="departmentName"/>
+        </association>
+    </resultMap>
+    <select id="getEmpByIdStep" resultMap="MyEmpByStep">
+        SELECT *
+        FROM tbl_employee
+        WHERE id = #{id}
+    </select>
+</mapper>
