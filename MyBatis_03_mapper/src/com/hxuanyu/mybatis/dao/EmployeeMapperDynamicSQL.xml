@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//com.hxuanyu.mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hxuanyu.mybatis.dao.EmployeeMapperDynamicSQL">
+    <!--查询员工，要求携带了哪个字段，查询条件就带上这个字段值-->
+    <select id="getEmpsByConditionIf" resultType="com.hxuanyu.mybatis.bean.Employee">
+        SELECT *
+        FROM tbl_employee
+        <where>
+            <if test="id != null">
+                id=#{id}
+            </if>
+            <if test="lastName != null and lastName != &quot;&quot;">
+                and last_name LIKE #{lastName}
+            </if>
+            <if test="email != null and email.trim() != &quot;&quot;">
+                and email = #{email}
+            </if>
+            <if test="gender == 0 or gender == 1">
+                and gender = #{gender}
+            </if>
+        </where>
+    </select>
+    <select id="getEmpsByConditionTrim" resultType="com.hxuanyu.mybatis.bean.Employee">
+        SELECT *
+        FROM tbl_employee
+        WHERE
+        <trim prefixOverrides="and" suffixOverrides="and">
+            <if test="id != null">
+                id=#{id}
+            </if>
+            <if test="lastName != null and lastName != &quot;&quot;">
+                and last_name LIKE #{lastName}
+            </if>
+            <if test="email != null and email.trim() != &quot;&quot;">
+                and email = #{email}
+            </if>
+            <if test="gender == 0 or gender == 1">
+                and gender = #{gender}
+            </if>
+        </trim>
+
+    </select>
+
+    <select id="getEmpsByConditionChoose" resultType="com.hxuanyu.mybatis.bean.Employee">
+        SELECT * FROM tbl_employee
+        <where>
+            <!--如果带了id就用id查，如果带了lastName就用lastName查-->
+            <choose>
+                <when test="id != null">
+                    id = #{id}
+                </when>
+                <when test="lastName != null">
+                    last_name like #{lastName}
+                </when>
+                <when test="email != null">
+                    email = #{email}
+                </when>
+                <otherwise>
+                    gender = 0
+                </otherwise>
+            </choose>
+        </where>
+    </select>
+
+    <update id="updateEmp">
+        UPDATE tbl_employee
+        <set>
+            <if test="lastName!=null">
+                last_name=#{lastName},
+            </if>
+            <if test="email!=null">
+                email=#{email},
+            </if>
+            <if test="gender!=null">
+                gender=#{gender}
+            </if>
+        </set>
+        where id = #{id}
+    </update>
+
+    <select id="getEmpsByConditionForeach" resultType="com.hxuanyu.mybatis.bean.Employee">
+        SELECT * FROM tbl_employee WHERE id IN
+        <foreach collection="ids" item="item_id" separator="," open="(" close=")">
+            #{item_id}
+        </foreach>
+    </select>
+
+    <!--    <insert id="addEmps">-->
+    <!--        INSERT INTO tbl_employee(last_name, gender, email, d_id)-->
+    <!--        VALUES-->
+    <!--        <foreach collection="emps" item="emp" separator=",">-->
+    <!--            (#{emp.lastName}, #{emp.gender}, #{emp.email}, #{emp.dept.id})-->
+    <!--        </foreach>-->
+    <!--    </insert>-->
+    <insert id="addEmps">
+        <include refid="insertColumn"/>
+    </insert>
+    <sql id="insertColumn">
+        <foreach collection="emps" item="emp" separator=";">
+            INSERT INTO tbl_employee(last_name, gender, email, d_id)
+            VALUES (#{emp.lastName}, #{emp.gender}, #{emp.email}, #{emp.dept.id})
+        </foreach>
+    </sql>
+</mapper>

@@ -55,16 +55,43 @@
         <result column="last_name" property="lastName"/>
         <result column="email" property="email"/>
         <result column="gender" property="gender"/>
+        <result column="dept_name" property="departmentName"/>
         <association property="dept" javaType="com.hxuanyu.mybatis.bean.Department"
                      select="com.hxuanyu.mybatis.dao.DepartmentMapper.getDeptById" column="d_id">
             <!--使用select指定的方法，并传入column指定的这列参数的值查出对象，并封装给property-->
-            <id column="id" property="id"/>
-            <result column="dept_name" property="departmentName"/>
         </association>
     </resultMap>
-    <select id="getEmpByIdStep" resultMap="MyEmpByStep">
+    <resultMap id="MyEmpDis" type="com.hxuanyu.mybatis.bean.Employee">
+        <id column="id" property="id"/>
+        <result column="last_name" property="lastName"/>
+        <result column="email" property="email"/>
+        <result column="gender" property="gender"/>
+        <discriminator javaType="string" column="gender">
+            <case value="1" resultType="com.hxuanyu.mybatis.bean.Employee">
+                <association property="dept" javaType="com.hxuanyu.mybatis.bean.Department"
+                             select="com.hxuanyu.mybatis.dao.DepartmentMapper.getDeptById" column="d_id">
+                    <!--使用select指定的方法，并传入column指定的这列参数的值查出对象，并封装给property-->
+                </association>
+            </case>
+            <case value="0" resultType="com.hxuanyu.mybatis.bean.Employee">
+                <id column="id" property="id"/>
+                <result column="last_name" property="lastName"/>
+                <result column="last_name" property="email"/>
+                <result column="gender" property="gender"/>
+            </case>
+        </discriminator>
+    </resultMap>
+    <select id="getEmpByIdStep" resultMap="MyEmpDis">
         SELECT *
         FROM tbl_employee
         WHERE id = #{id}
     </select>
+
+    <select id="getEmpsByDeptId" resultType="com.hxuanyu.mybatis.bean.Employee">
+        SELECT *
+        FROM tbl_employee
+        WHERE d_id = #{id}
+    </select>
+
+
 </mapper>
