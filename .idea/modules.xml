@@ -5,7 +5,9 @@
       <module fileurl="file://$PROJECT_DIR$/.idea/LearnMyBatis.iml" filepath="$PROJECT_DIR$/.idea/LearnMyBatis.iml" />
       <module fileurl="file://$PROJECT_DIR$/MyBatis_01_HelloWorld/MyBatis_01_HelloWorld.iml" filepath="$PROJECT_DIR$/MyBatis_01_HelloWorld/MyBatis_01_HelloWorld.iml" />
       <module fileurl="file://$PROJECT_DIR$/MyBatis_03_mapper/MyBatis_03_mapper.iml" filepath="$PROJECT_DIR$/MyBatis_03_mapper/MyBatis_03_mapper.iml" />
-      <module fileurl="file://$PROJECT_DIR$/test/test.iml" filepath="$PROJECT_DIR$/test/test.iml" />
+      <module fileurl="file://$PROJECT_DIR$/MyBatis_05_spring/MyBatis_05_spring.iml" filepath="$PROJECT_DIR$/MyBatis_05_spring/MyBatis_05_spring.iml" />
+      <module fileurl="file://$PROJECT_DIR$/MyBatis_plugin/MyBatis_plugin.iml" filepath="$PROJECT_DIR$/MyBatis_plugin/MyBatis_plugin.iml" />
+      <module fileurl="file://$PROJECT_DIR$/springMVC/springMVC.iml" filepath="$PROJECT_DIR$/springMVC/springMVC.iml" />
     </modules>
   </component>
 </project>

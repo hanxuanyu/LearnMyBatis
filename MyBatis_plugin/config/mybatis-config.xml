@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE configuration
+        PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-config.dtd">
+<configuration>
+    <properties resource="dbconfig.properties"/>
+    <!--注册插件-->
+    <settings>
+        <setting name="mapUnderscoreToCamelCase" value="true"/>
+        <setting name="jdbcTypeForNull" value="NULL"/>
+
+        <!--显示的指定每个我们需要更改的配置的值，即使他是默认的。防止版本更新带来的问题  -->
+        <setting name="lazyLoadingEnabled" value="true"/>
+        <setting name="aggressiveLazyLoading" value="false"/>
+    </settings>
+    <typeAliases>
+        <typeAlias type="com.hxuanyu.mybatis.bean.Employee" alias="emp"/>
+    </typeAliases>
+    <plugins>
+        <plugin interceptor="com.hxuanyu.mybatis.MyFirstPlugin">
+            <property name="username" value="root"/>
+            <property name="password" value="123456"/>
+        </plugin>
+    </plugins>
+    <environments default="development">
+        <environment id="development">
+            <transactionManager type="JDBC"/>
+            <dataSource type="POOLED">
+                <property name="driver" value="${jdbc.driver}"/>
+                <property name="url" value="${jdbc.url}"/>
+                <property name="username" value="${jdbc.username}"/>
+                <property name="password" value="${jdbc.password}"/>
+            </dataSource>
+        </environment>
+    </environments>
+    <!-- 将我们写好的sql映射文件（EmployeeMapper.xml）一定要注册到全局配置文件（com.hxuanyu.mybatis-config.xml）中 -->
+    <mappers>
+        <package name="com.hxuanyu.mybatis.dao"/>
+    </mappers>
+</configuration>

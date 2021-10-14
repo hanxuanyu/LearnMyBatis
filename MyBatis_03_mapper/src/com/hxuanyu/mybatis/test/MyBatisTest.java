@@ -21,7 +21,8 @@ import java.util.Map;
 /**
  * 1. 根据xml配置文件创建一个SqlSessionFactory对象
  * 2. 创建一个SqlSession实例
- * 3. 调用相关方法
+ * 3. 获取接口的代理对象MapperFactory
+ * 4. 调用相关方法
  *
  * @author hanxuanyu
  * @version 1.0

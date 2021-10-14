@@ -1,0 +1,14 @@
+<component name="ArtifactManager">
+  <artifact type="exploded-war" name="MyBatis_05_spring:Web exploded">
+    <output-path>$PROJECT_DIR$/out/artifacts/MyBatis_05_spring_Web_exploded</output-path>
+    <root id="root">
+      <element id="javaee-facet-resources" facet="MyBatis_05_spring/web/Web" />
+      <element id="directory" name="WEB-INF">
+        <element id="directory" name="classes">
+          <element id="javaee-facet-classes" facet="MyBatis_05_spring/web/Web" />
+        </element>
+        <element id="directory" name="lib" />
+      </element>
+    </root>
+  </artifact>
+</component>
